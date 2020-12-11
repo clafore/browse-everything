@@ -116,7 +116,7 @@ class BrowseEverythingController < ActionController::Base
     # Hence, a Browser must be reinstantiated for each request using the state provided in the Rails session
     # @return [BrowseEverything::Browser]
     def browser
-      BrowserFactory.build(session: session, url_options: url_options)
+      @browser ||= BrowserFactory.build(session: session, url_options: url_options)
     end
 
     helper_method :auth_link

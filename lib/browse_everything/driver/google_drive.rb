@@ -32,7 +32,7 @@ module BrowseEverything
         value = value.fetch('access_token') if value.is_a? Hash
 
         # Restore the credentials if the access token string itself has been cached
-        restore_credentials(value) if @credentials.nil?
+        @credentials = authorizer.get_credentials(user_id) || restore_credentials(value) if @credentials.nil?
 
         super(value)
       end
@@ -140,7 +140,7 @@ module BrowseEverything
       # (This is fundamentally used to temporarily cache access tokens)
       # @return [Google::Auth::Stores::FileTokenStore]
       def token_store
-        Google::Auth::Stores::FileTokenStore.new(file: file_token_store_path)
+        Google::Auth::Stores::FileTokenStore.new(file: "/tmp/mytokens.yaml")
       end
 
       def session
@@ -165,7 +165,7 @@ module BrowseEverything
       # This is *the* method which, passing an HTTP request, redeems an authorization code for an access token
       # @return [String] a new access token
       def authorize!
-        @credentials = authorizer.get_credentials_from_code(user_id: user_id, code: code)
+        @credentials = authorizer.get_and_store_credentials_from_code(user_id: user_id, code: code)
         @token = @credentials.access_token
         @code = nil # The authorization code can only be redeemed for an access token once
         @token
@@ -232,7 +232,7 @@ module BrowseEverything
           client.client_id = client_id.id
           client.client_secret = client_id.secret
           client.update_token!('access_token' => access_token)
-          @credentials = client
+          client
         end
     end
   end
