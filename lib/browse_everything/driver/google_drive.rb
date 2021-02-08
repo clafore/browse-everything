@@ -3,6 +3,7 @@
 require 'google/apis/drive_v3'
 require 'googleauth'
 require 'googleauth/stores/file_token_store'
+require 'googleauth/stores/redis_token_store'
 require_relative 'authentication_factory'
 
 module BrowseEverything
@@ -185,7 +186,11 @@ module BrowseEverything
       # (This is fundamentally used to temporarily cache access tokens)
       # @return [Google::Auth::Stores::FileTokenStore]
       def token_store
-        Google::Auth::Stores::FileTokenStore.new(file: "/tmp/mytokens.yaml")
+        if config[:redis_token_store_url].present?
+          Google::Auth::Stores::RedisTokenStore.new(redis: Redis.new(url: config[:redis_token_store_url]))
+        else
+          Google::Auth::Stores::FileTokenStore.new(file: file_token_store_path)
+        end
       end
 
       def session

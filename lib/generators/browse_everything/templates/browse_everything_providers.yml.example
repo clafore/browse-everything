@@ -11,6 +11,7 @@
 # google_drive:
 #   client_id: YOUR_GOOGLE_API_CLIENT_ID
 #   client_secret: YOUR_GOOGLE_API_CLIENT_SECRET
+#   redis_token_store_url: redis://YOUR_REDIS_HOST:PORT # if using Redis to store access tokens
 # s3:
 #   bucket: YOUR_AWS_S3_BUCKET
 #   response_type: signed_url # set to :public_url for public urls or :s3_uri for an s3://BUCKET/KEY uri
