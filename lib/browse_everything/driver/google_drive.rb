@@ -136,8 +136,10 @@ module BrowseEverything
       def contents(path = '')
         @entries = []
         if path.empty?
+          @entries << drive_details(Google::Apis::DriveV3::Drive.new(id: "root", name: "My Drive" ))
+          @entries << drive_details(Google::Apis::DriveV3::Drive.new(id: "shared_drives", name: "Shared drives" )) if drive_service.list_drives.drives.any?
+        elsif path == 'shared_drives'
           drive_service.batch do |drive|
-            @entries << drive_details(Google::Apis::DriveV3::Drive.new(id: "root", name: "My Drive" ))
             list_drives(drive)
           end
         else
