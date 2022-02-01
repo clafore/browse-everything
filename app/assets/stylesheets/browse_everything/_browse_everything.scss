@@ -13,14 +13,22 @@
 #browse-everything {
   overflow-y: hidden;
   position: fixed !important;
-  margin: 0 0 0 -37.5%;
-  left: 50%;
+  # margin: 0 0 0 -37.5%;
+  # left: 50%;
   top: 10%;
   background-color: initial;
-  width: 75%;
+  width: 100%;
 
   div {
     background-color: white;
+  }
+
+  .modal-dialog {
+    width: 75%;
+
+    @media (max-width: 768px) {
+      width: auto;
+    }
   }
 
   .modal-header {

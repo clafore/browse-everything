@@ -146,10 +146,11 @@ $ ->
     table.width(full_width)
     set_size = (selector, pct) ->
       $(selector, table).width(full_width * pct).css('width',full_width * pct).css('max-width',full_width * pct)
-    set_size '.ev-file', 0.4
-    set_size '.ev-container', 0.4
+    # Don't limit the width of the filename
+    # set_size '.ev-file', 0.4
+    # set_size '.ev-container', 0.4
     set_size '.ev-size', 0.1
-    set_size '.ev-kind', 0.3
+    set_size '.ev-kind', 0.2
     set_size '.ev-date', 0.2
 
   loadFiles = (node, table, progressIntervalID)->
